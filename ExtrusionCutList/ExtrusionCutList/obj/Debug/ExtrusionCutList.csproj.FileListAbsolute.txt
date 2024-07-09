@@ -1,0 +1,17 @@
+C:\Users\karde\Desktop\Codeo\ExtrusionCutList\ExtrusionCutList\bin\Debug\ExtrusionCutList.exe.config
+C:\Users\karde\Desktop\Codeo\ExtrusionCutList\ExtrusionCutList\bin\Debug\ExtrusionCutList.exe
+C:\Users\karde\Desktop\Codeo\ExtrusionCutList\ExtrusionCutList\bin\Debug\ExtrusionCutList.pdb
+C:\Users\karde\Desktop\Codeo\ExtrusionCutList\ExtrusionCutList\obj\Debug\ExtrusionCutList.csproj.AssemblyReference.cache
+C:\Users\karde\Desktop\Codeo\ExtrusionCutList\ExtrusionCutList\obj\Debug\ExtrusionCutList.csproj.SuggestedBindingRedirects.cache
+C:\Users\karde\Desktop\Codeo\ExtrusionCutList\ExtrusionCutList\obj\Debug\MainWindow.g.cs
+C:\Users\karde\Desktop\Codeo\ExtrusionCutList\ExtrusionCutList\obj\Debug\App.g.cs
+C:\Users\karde\Desktop\Codeo\ExtrusionCutList\ExtrusionCutList\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\karde\Desktop\Codeo\ExtrusionCutList\ExtrusionCutList\obj\Debug\ExtrusionCutList_MarkupCompile.cache
+C:\Users\karde\Desktop\Codeo\ExtrusionCutList\ExtrusionCutList\obj\Debug\ExtrusionCutList_MarkupCompile.lref
+C:\Users\karde\Desktop\Codeo\ExtrusionCutList\ExtrusionCutList\obj\Debug\MainWindow.baml
+C:\Users\karde\Desktop\Codeo\ExtrusionCutList\ExtrusionCutList\obj\Debug\ExtrusionCutList.g.resources
+C:\Users\karde\Desktop\Codeo\ExtrusionCutList\ExtrusionCutList\obj\Debug\ExtrusionCutList.Properties.Resources.resources
+C:\Users\karde\Desktop\Codeo\ExtrusionCutList\ExtrusionCutList\obj\Debug\ExtrusionCutList.csproj.GenerateResource.cache
+C:\Users\karde\Desktop\Codeo\ExtrusionCutList\ExtrusionCutList\obj\Debug\ExtrusionCutList.csproj.CoreCompileInputs.cache
+C:\Users\karde\Desktop\Codeo\ExtrusionCutList\ExtrusionCutList\obj\Debug\ExtrusionCutList.exe
+C:\Users\karde\Desktop\Codeo\ExtrusionCutList\ExtrusionCutList\obj\Debug\ExtrusionCutList.pdb

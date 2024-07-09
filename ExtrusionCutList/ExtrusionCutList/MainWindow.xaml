@@ -1,0 +1,258 @@
+﻿<Window x:Class="ExtrusionCutList.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ExtrusionCutList"
+        mc:Ignorable="d"
+        Title="Extrusion Cut List"
+        Height="644"
+        Width="996"
+        MinWidth="498"
+        MinHeight="322"
+        WindowStyle="None"
+        ResizeMode="CanResizeWithGrip"
+        Background="Transparent"
+        AllowsTransparency="True"
+        MouseDown="Window_MouseDown"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        SizeChanged="MainWindow_SizeChanged">
+
+    <Window.Resources>
+        <!-- Varsayılan font boyutunu artırıyoruz -->
+        <Style TargetType="Control">
+            <Setter Property="FontSize" Value="16"/>
+        </Style>
+        <!-- Butonlar için varsayılan font boyutunu ayarlıyoruz -->
+        <Style TargetType="Button">
+            <Setter Property="FontSize" Value="16"/>
+        </Style>
+        <!-- Hücre içindeki metni ortalamak ve varsayılan font boyutunu 15 yapmak için stil -->
+        <Style x:Key="CenteredTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="15"/>
+        </Style>
+    </Window.Resources>
+
+    <!-- DPI ayarlarını otomatik olarak ayarlamak için DpiDecorator kullanıyoruz -->
+    <local:DpiDecorator>
+        <Grid>
+            <!-- Grid'in kolon tanımı, tüm genişlik 1:1 orantıda -->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Pencerenin ana arka plan ve köşe yuvarlama ayarları -->
+            <Border Background="#272637" CornerRadius="20" Grid.ColumnSpan="1">
+                <Grid>
+                    <!-- Grid'in kolon tanımları -->
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="282"/>
+                        <!-- Sol panel genişliği sabit -->
+                        <ColumnDefinition Width="*"/>
+                        <!-- Orta panel genişliği esnek -->
+                        <ColumnDefinition Width="100"/>
+                        <!-- Sağ panel genişliği sabit -->
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Grid'in satır tanımları -->
+                    <Grid.RowDefinitions>
+                        <RowDefinition x:Name="headerRow" Height="35"/>
+                        <!-- Başlık satırı yüksekliği sabit -->
+                        <RowDefinition Height="*"/>
+                        <!-- Orta satır yüksekliği esnek -->
+                        <RowDefinition Height="Auto" MinHeight="56"/>
+                        <!-- Alt satır yüksekliği içerik kadar, min 56 -->
+                    </Grid.RowDefinitions>
+
+                    <!-- Başlık kısmı için arka plan ve köşe yuvarlama ayarları -->
+                    <Border Grid.ColumnSpan="3" Background="#252525" CornerRadius="20,20,0,0"/>
+
+                    <!-- Başlık etiketi (Label) -->
+                    <Label x:Name="titleLabel"
+                           Content="Extrusion Cut List"
+                           Foreground="Gray"
+                           FontWeight="SemiBold"
+                           FontFamily="Segoe UI"
+                           Grid.Row="0"
+                           Grid.Column="0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Margin="10,0,0,0"/>
+                    <!-- 10 birimlik boşluk üstten -->
+
+                    <!-- Pencere kontrol Butonlar (simge durumuna küçültme, büyütme/küçültme, kapatma) -->
+                    <StackPanel HorizontalAlignment="Center"
+                                Orientation="Horizontal"
+                                Grid.Row="0"
+                                Grid.Column="2"
+                                Width="84">
+                        <!-- Simge durumuna küçültme Butonu -->
+                        <Button Width="25" Height="25"
+                                Content="_"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Foreground="Gray"
+                                FontWeight="Bold"
+                                Margin="0,0,0,5"
+                                Click="ButtonMinimize_Click"/>
+
+                        <!-- Pencereyi büyütme/küçültme Butonu -->
+                        <Button Width="30" Height="28"
+                                Content="□"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Foreground="Gray"
+                                FontWeight="Bold"
+                                Click="WindowStateButton_Click"/>
+
+                        <!-- Pencereyi kapatma butonu -->
+                        <Button Width="30" Height="20"
+                                Content="❌"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Foreground="Gray"
+                                FontWeight="Bold"
+                                Click="CloseButton_Click"/>
+                    </StackPanel>
+
+                    <!-- Veri görüntüleme için DataGrid -->
+                    <DataGrid x:Name="ExtrusionDataGrid" AutoGenerateColumns="False" Margin="10,10,10,10"
+                              Grid.Row="1" Grid.ColumnSpan="3" SelectionChanged="ExtrusionDataGrid_SelectionChanged_1">
+                        <DataGrid.Columns>
+                            <!-- Thumbnail sütunu -->
+                            <DataGridTemplateColumn Width="*">
+                                <DataGridTemplateColumn.Header>
+                                    <TextBlock Text="Thumbnail" TextWrapping="Wrap" Style="{StaticResource CenteredTextBlockStyle}"/>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Image Source="{Binding Thumbnail}" Width="90" Height="90"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- Extrusion Type sütunu -->
+                            <DataGridTemplateColumn Width="*">
+                                <DataGridTemplateColumn.Header>
+                                    <TextBlock Text="Extrusion Type" TextWrapping="Wrap" Style="{StaticResource CenteredTextBlockStyle}"/>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding ExtrusionType}" TextWrapping="Wrap" Style="{StaticResource CenteredTextBlockStyle}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- Description sütunu -->
+                            <DataGridTemplateColumn Width="*">
+                                <DataGridTemplateColumn.Header>
+                                    <TextBlock Text="Description" TextWrapping="Wrap" Style="{StaticResource CenteredTextBlockStyle}"/>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Description}" TextWrapping="Wrap" Style="{StaticResource CenteredTextBlockStyle}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- Item Qty sütunu -->
+                            <DataGridTemplateColumn Width="*">
+                                <DataGridTemplateColumn.Header>
+                                    <TextBlock Text="Item Qty" TextWrapping="Wrap" Style="{StaticResource CenteredTextBlockStyle}"/>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding ItemQty}" TextWrapping="Wrap" Style="{StaticResource CenteredTextBlockStyle}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- Item Length [mm] sütunu -->
+                            <DataGridTemplateColumn Width="*">
+                                <DataGridTemplateColumn.Header>
+                                    <TextBlock Text="Item Length [mm]" TextWrapping="Wrap" Style="{StaticResource CenteredTextBlockStyle}"/>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding ItemLength}" TextWrapping="Wrap" Style="{StaticResource CenteredTextBlockStyle}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- Angle 1 [°] sütunu -->
+                            <DataGridTemplateColumn Width="*">
+                                <DataGridTemplateColumn.Header>
+                                    <TextBlock Text="Angle 1 [°]" TextWrapping="Wrap" Style="{StaticResource CenteredTextBlockStyle}"/>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Angle1}" TextWrapping="Wrap" Style="{StaticResource CenteredTextBlockStyle}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- Cut Detail 1 sütunu -->
+                            <DataGridTemplateColumn Width="*">
+                                <DataGridTemplateColumn.Header>
+                                    <TextBlock Text="Cut Detail 1" TextWrapping="Wrap" Style="{StaticResource CenteredTextBlockStyle}"/>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding CutDetail1}" TextWrapping="Wrap" Style="{StaticResource CenteredTextBlockStyle}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- Cut Detail 2 sütunu -->
+                            <DataGridTemplateColumn Width="*">
+                                <DataGridTemplateColumn.Header>
+                                    <TextBlock Text="Cut Detail 2" TextWrapping="Wrap" Style="{StaticResource CenteredTextBlockStyle}"/>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding CutDetail2}" TextWrapping="Wrap" Style="{StaticResource CenteredTextBlockStyle}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- Angle 2 [°] sütunu -->
+                            <DataGridTemplateColumn Width="*">
+                                <DataGridTemplateColumn.Header>
+                                    <TextBlock Text="Angle 2 [°]" TextWrapping="Wrap" Style="{StaticResource CenteredTextBlockStyle}"/>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Angle2}" TextWrapping="Wrap" Style="{StaticResource CenteredTextBlockStyle}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- Notch Point (kesim noktası) sütunu -->
+                            <DataGridTemplateColumn Width="*">
+                                <DataGridTemplateColumn.Header>
+                                    <TextBlock Text="Notch Point [mm]" TextWrapping="Wrap" Style="{StaticResource CenteredTextBlockStyle}"/>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding NotchPoint}" TextWrapping="Wrap" Style="{StaticResource CenteredTextBlockStyle}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <!-- Dışa aktarım butonları -->
+                    <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.ColumnSpan="3" HorizontalAlignment="Left" Margin="10,0,0,0">
+                        <!-- CSV olarak dışa aktarma butonu -->
+                        <Button x:Name="ExportCSVButton" Content="Export CSV" Width="100" Height="30" VerticalAlignment="Center" Margin="0,0,10,0" Click="ExportCSV_Click"/>
+                        <!-- PDF olarak dışa aktarma butonu-->
+                        <Button x:Name="ExportPDFButton" Content="Export PDF" Width="100" Height="30" VerticalAlignment="Center" Click="ExportPDF_Click"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </local:DpiDecorator>
+</Window>
